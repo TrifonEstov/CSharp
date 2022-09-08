@@ -29,8 +29,7 @@ class ExcellentStudent
         object jsonObject = JsonDataFileReader.GetJArray("Students.json");
         string jsonString = jsonObject.ToString();
         Console.WriteLine(jsonString);
-
-
+        Console.WriteLine(jsonString);
 
     }
 
