@@ -12,7 +12,7 @@ class ExcellentStudent
 
         JArray jsonObjects = JsonDataFileReader.GetJArray("Students.json");
         List<JObject> students = jsonObjects.ToObject<List<JObject>>();
-        List<JObject> studentsListWithIds =  AddStudentId(students);
+        List<JObject> studentsListWithIds = AddStudentId(students);
 
         foreach (var student in studentsListWithIds)
         {
@@ -24,7 +24,7 @@ class ExcellentStudent
         }
 
         List<Student> excellentStudents = theSchool.GetExcelentStudents();
-        
+
         foreach (var excellentStudent in excellentStudents)
         {
             excellentStudent.Speak();
@@ -42,48 +42,5 @@ class ExcellentStudent
             studentsListWithIds.Add(studentObject);
         }
         return studentsListWithIds;
-    }
-    private static void WriteToFile(string outputFile, string pancakeNameList)
-    {
-        StreamWriter writer = new StreamWriter(outputFile);
-        writer.WriteLine(pancakeNameList);
-        writer.Dispose();
-    }
-
-    private static string CreateFinalNameList(List<string> filteredPeople)
-    {
-        string finalMessage = string.Join(" and ", filteredPeople) + " will make pancakes.";
-        
-        return finalMessage;
-    }
-
-    private static List<string> FilterPeopleForPancakes(Dictionary<string, string[]> nameProductPair)
-    {
-        List<string> filteredNamesForPancakes = new List<string>();
-        foreach (var pair in nameProductPair)
-        {
-            List<string> products = pair.Value.ToList();
-            if (products.Contains("Eggs") && products.Contains("Milk") && products.Contains("Butter") && products.Contains("Flour"))
-            {
-                filteredNamesForPancakes.Add(pair.Key);
-            }
-        }
-
-        return filteredNamesForPancakes; 
-    }
-
-    private static Dictionary<string, string> GetStudentInfo(List<string> lines)
-    {
-        Dictionary<string, string> nameAgeSubjectMarksPairs = new Dictionary<string, string>();
-        foreach (string line in lines)
-        {
-            string[] nameAgeAndSubjectMarks = line.Split(":");
-            string nameAgePair = nameAgeAndSubjectMarks[0];
-            string subjectMakrsPair = nameAgeAndSubjectMarks[1];
-
-            nameAgeSubjectMarksPairs.Add(nameAgePair, subjectMakrsPair);
-        }
-
-        return nameAgeSubjectMarksPairs;
     }
 }
