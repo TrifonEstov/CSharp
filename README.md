@@ -1,1 +1,1 @@
-# MyFirstApp
+# This program reads a JSON file and returns a list of students with only excellent marks + information when they graduate.

@@ -4,25 +4,26 @@ namespace Project1
 {
     internal class School
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        private List<Student> _studentsList;
-
-        public List<Student> StudentsList
-        {
-            get { return _studentsList; }
-            set { _studentsList = value; }
-        }
-
         public School(string name, string address)
         {
             Name = name;
             Address = address;
+            StudentsList = new List<Student>();
         }
+
+        public string Name { get; set; }
+        public string Address { get; set; }
+
+        public List<Student> StudentsList { get; set; }
 
         public void AddStudent(Student student)
         {
             StudentsList.Add(student);
+        }
+
+        public void AddStudents(List<Student> students)
+        {
+            StudentsList.AddRange(students);
         }
 
         public void RemoveStuden(int studentId)
@@ -36,16 +37,6 @@ namespace Project1
             }
         }
 
-        public List<Student> ExcellentStuden()
-        {
-            List<Student> excellentStudents = new List<Student>();
-
-            foreach (var student in StudentsList)
-            {
-                //TODO
-            }
-
-            return excellentStudents;
-        }
+        public List<Student> GetExcelentStudents() => StudentsList.Where(student => student.IsExcelent).ToList();
     }
 }

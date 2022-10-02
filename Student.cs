@@ -9,23 +9,21 @@ namespace MyFirstApp
     public class Student
     {
         private const int GraduateAge = 18;
-        private int _id;
         private int _age;
         private Dictionary<string, int> _subjectMarks;
 
-        public Student(string name, int age)
+        public Student(int id, string name, int age, Dictionary<string, int> marks)
         {
+            Id = id;
             Name = name;
             Age = age;
+            Marks = marks;
         }
 
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool IsExcellent { get; set; }
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
+
         public int Age
         {
             get { return _age; }
@@ -41,6 +39,10 @@ namespace MyFirstApp
                 }
             }
         }
+
+        public Dictionary<string, int> Marks { get; set; }
+
+        public bool IsExcelent => Marks.Values.Where(value => value == 6).Count() == Marks.Values.Count;
 
         public void Speak()
         {

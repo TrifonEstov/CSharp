@@ -1,4 +1,5 @@
 ﻿using MyFirstApp;
+using Newtonsoft.Json.Linq;
 using Project1;
 using System.Collections;
 
@@ -7,32 +8,41 @@ class ExcellentStudent
 {
     static void Main(string[] args)
     {
-        /*string sourceFile = GetTestDataPath("TextFile1.txt");
-        List<string> linesOfStudents = GetLinesFromFile(sourceFile);
-        Dictionary<string, string> studentsInfoFromFile = GetStudentInfo(linesOfStudents);
-        Dictionary<string,int> nameAgePairs = new Dictionary<string, int>();
-        List<string> subjectMarks = new List<string>();
+        School theSchool = new School("Sofia High School", "str. Sofia 1, Sofia");
 
-        foreach (string line in linesOfStudents)
+        JArray jsonObjects = JsonDataFileReader.GetJArray("Students.json");
+        List<JObject> students = jsonObjects.ToObject<List<JObject>>();
+        List<JObject> studentsListWithIds =  AddStudentId(students);
+
+        foreach (var student in studentsListWithIds)
         {
-            string[] currentStudentInfo = line.Split(":");
-            string[] currentNameAgeInfo = currentStudentInfo[0].Split(",");
-            string name = currentNameAgeInfo[0];
-            int age = int.Parse(currentNameAgeInfo[1]);
-            nameAgePairs.Add(name, age);
-            subjectMarks.Add(currentStudentInfo[1]);
+            Student currentStudentFromTheList = student.ToObject<Student>();
+            currentStudentFromTheList.Name = student.GetValue("Name").ToObject<string>();
+            currentStudentFromTheList.Id = student.GetValue("Id").ToObject<int>();
+            currentStudentFromTheList.Marks = student.GetValue("Marks").ToObject<Dictionary<string, int>>();
+            theSchool.StudentsList.Add(currentStudentFromTheList);
         }
 
-        School theSchool = new School("Sofia High School", "str. Sofia 1, Sofia");*/
-
-
-        object jsonObject = JsonDataFileReader.GetJArray("Students.json");
-        string jsonString = jsonObject.ToString();
-        Console.WriteLine(jsonString);
-        Console.WriteLine(jsonString);
-
+        List<Student> excellentStudents = theSchool.GetExcelentStudents();
+        
+        foreach (var excellentStudent in excellentStudents)
+        {
+            excellentStudent.Speak();
+        }
     }
 
+    private static List<JObject> AddStudentId(List<JObject> students)
+    {
+        List<JObject> studentsListWithIds = new List<JObject>();
+        foreach (var studentObject in students)
+        {
+            Random random = new Random();
+            int randomId = random.Next();
+            studentObject.Add("Id", randomId);
+            studentsListWithIds.Add(studentObject);
+        }
+        return studentsListWithIds;
+    }
     private static void WriteToFile(string outputFile, string pancakeNameList)
     {
         StreamWriter writer = new StreamWriter(outputFile);
@@ -75,33 +85,5 @@ class ExcellentStudent
         }
 
         return nameAgeSubjectMarksPairs;
-    }
-
-    private static List<string> GetLinesFromFile(string path)
-    {
-        List<string> lines = new List<string>();
-        StreamReader reader = new StreamReader(path);
-        string line;
-
-        do
-        {
-            line = reader.ReadLine();
-            if (line != null)
-            {
-                lines.Add(line);
-            }
-        } while (line != null);
-        reader.Dispose();
-
-        return lines;
-    }
-
-    private static string GetTestDataPath(string fileName)
-    {
-        string basePath = AppDomain.CurrentDomain.BaseDirectory;
-        basePath = basePath.Replace(@"\bin\Debug\net6.0\", "");
-        string absolutePath = basePath + $"\\TestData\\{fileName}";
-
-        return absolutePath;
     }
 }
