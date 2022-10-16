@@ -2,7 +2,7 @@
 
 namespace Project1
 {
-    internal class School
+    public class School
     {
         public School(string name, string address)
         {
